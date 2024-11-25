@@ -1,0 +1,68 @@
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+
+import { ListNode, printListNode } from "./Linked Lists/utils/ListNode.js";
+
+var addTwoNumbers = function (l1, l2) {
+    let num1 = l1?.val || 0;
+    let num2 = l2?.val || 0;
+    let currentVal = num1 + num2;
+    if (currentVal >= 10) {
+        currentVal = currentVal % 10;
+        if (l1?.next) {
+            l1.next.val += 1; // pass an extra 10 to the next sum
+        } else if (l2?.next) {
+            l2.next.val += 1;
+        } else {
+            // add a new listnode on the end
+            return new ListNode(currentVal, null);
+        }
+    }
+    return new ListNode(
+        currentVal,
+        l1?.next || l2?.next ? addTwoNumbers(l1?.next, l2?.next) : null
+    );
+};
+
+// Testing
+
+/* Algorithm 
+ The numbers are stored in reverse order, so we add each array at the same index
+ if the sum is over 10 we carry and add that to the next sum
+*/
+
+// const l1C = new ListNode(3, null);
+// const l1B = new ListNode(4, l1C);
+// const l1 = new ListNode(2, l1B);
+
+// const l2C = new ListNode(4, null);
+// const l2B = new ListNode(6, l2C);
+// const l2 = new ListNode(5, l2B);
+
+const l1G = new ListNode(9, null);
+const l1F = new ListNode(9, l1G);
+const l1E = new ListNode(9, l1F);
+const l1D = new ListNode(9, l1E);
+const l1C = new ListNode(9, l1D);
+const l1B = new ListNode(9, l1C);
+const l1 = new ListNode(9, l1B);
+
+const l2D = new ListNode(9, null);
+const l2C = new ListNode(9, l2D);
+const l2B = new ListNode(9, l2C);
+const l2 = new ListNode(9, l2B);
+
+printListNode(l1, "l1");
+printListNode(l2, "l2");
+
+printListNode(addTwoNumbers(l1, l2));
